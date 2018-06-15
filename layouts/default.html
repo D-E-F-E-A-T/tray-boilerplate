@@ -1,0 +1,78 @@
+<!doctype html>
+{% if pages.current == 'home' or pages.current == 'search' or pages.current == 'catalog' or pages.current == 'product' or pages.current == 'checkout_cart' or pages.current == 'register' or pages.current == 'login' or pages.current == 'checkout_payment' or pages.current == 'map' %}
+	<html lang="pt-br" data-store="{{ store.id }}" class="page-{{ pages.current }}">
+{% else %}
+	<html lang="pt-br" data-store="{{ store.id }}" class="tray-content page-{{ pages.current }}">
+{% endif %}
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		{% if pages.current == 'product' %}
+			<meta property="og:type" content="product" />
+			<meta property="og:title" content="{{ product.name }}" />
+			<meta property="og:url" content="{{ product.link }}"/>
+			<meta property="og:site_name" content="{{ store.name }}" />
+			<meta property="og:price:amount" content="{{ product.price }}" />
+			<meta property="og:price:currency" content="BRL" />
+		{% endif %}
+
+		{{ tray.meta }}
+
+		{{ tray.styles }}
+		<link rel="stylesheet" href="{{ themePath }}css/tray-boilerplate.css" />
+		<link rel="stylesheet" href="{{ themePath }}css/app.css?{{ utils.assets_version }}" />
+
+		{{ tray.scripts }}
+
+		{{ tray.analytics }}
+		{{ googleTagManager.header(pages.current, tagManagerData) }}
+
+		{% if pages.current == 'contact' %}
+			<style>.board,.container3{margin-right:auto!important;margin-left:auto!important;padding-right:15px!important;padding-left:15px!important;max-width:1170px!important}</style>
+		{% endif %}
+	 
+	</head>
+	<body data-page="{{ pages.current }}">
+		{{ googleTagManager.top(pages.current, tagManagerData) }}
+
+		{% element 'header' %}
+
+		{{ content_for_layout }}
+
+		{% element 'footer' %}
+
+		{% element 'menu-mobile' %}
+
+		{% element 'snippets/modal' %}
+			
+		{{ googleTagManager.bottom(pages.current, tagManagerData) }}
+
+		{{ html.script('dist/application.min.js?' ~ utils.assets_version) }}
+		
+		{% element 'snippets/pageview' %}
+
+		<input class="page" type="hidden" value="{{ pages.current }}" />
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.2/jquery.matchHeight-min.js"></script>
+		<script src="{{ themePath }}js/tray-boilerplate.js"></script>
+		<script src="{{ themePath }}js/app.js"></script>
+
+		<script>
+			{% if pages.current == 'central_cliente' %}
+				jQuery('.central-saudacao h2').append('<a href="/loja/logout.php?loja=609102" class="link-logout"> [ Sair ]</a>');
+			{% endif %}
+
+			{% if pages.current == 'checkout_cart' %}
+				jQuery(document).ready(function(){jQuery('#ProdBlock').remove(),jQuery('.caixa-frete .bottom').remove()});
+			{% endif %}
+
+			{% if pages.current == 'register' %}
+				if(jQuery('html').hasClass('page-register')){jQuery('.container .container2 form input').each(function(){var e=jQuery(this).attr('id');jQuery(this).parent().addClass(e)}),jQuery('#cobranca_estado').closest('label').addClass('cobranca_estado');var checkAddress=jQuery('#endereco_cobranca_diferente'),labelCheckAddress=jQuery('label.dif');checkAddress.before('<div class="change-address"></div>'),jQuery('.change-address').append(checkAddress).append(labelCheckAddress)}
+			{% endif %}
+		</script>
+
+	</body>
+</html>
