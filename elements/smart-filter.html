@@ -1,0 +1,71 @@
+<form name="form-filter" method="get" class="smart-filter">
+    <input type="hidden" name="loja" value="{{ store.id }}">
+
+    {% if category.id %}
+        <input type="hidden" name="categoria" value="{{ category.id }}">
+    {% endif %}
+    
+    {% if search.word %}
+        <input name="palavra_busca" type="hidden" value="{{ search.word }}">
+    {% endif %}
+ 
+    <h2>
+        <i class="open-filters visible-xs visible-sm pull-right"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="20" height="20" viewBox="0 0 459 459" style="enable-background:new 0 0 459 459;" xml:space="preserve"><g><g id="filter"><path d="M178.5,382.5h102v-51h-102V382.5z M0,76.5v51h459v-51H0z M76.5,255h306v-51h-306V255z" fill="#a0a2a3"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg></i>
+        {{ Translation('filtrar') }}
+    </h2>
+    
+    <div class="filters-list">
+        {% if filters.applied %}
+        <div class="applied-filters">
+            <h3>{{ Translation('limpar_filtros') }}</h3>
+            <ul>
+                {% for applied in filters.applied %}
+                    {% for item in applied %}
+                        <li>
+                            <a href="{{ item.url }}">
+                                <span class="filter-checkbox checked"></span>
+                                {{ item.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        {% for myFilter in filters %}
+            
+            {% if myFilter.items %}
+                <h3>{{ myFilter.title }}</h3>
+                <ul>
+                {% for item in myFilter.items %}
+                    <li>
+                        <a href="{{ item.url }}">
+                            <span class="filter-checkbox"></span>
+                            {{ item.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+
+            {% elseif myFilter|length %}
+               {% for var in myFilter %}
+                   {% if var.items %}
+                       <h3>{{ var.title }}</h3>
+                       <ul>
+                           {% for item in var.items %}
+                           <li>
+                                <a href="{{ item.url }}">
+                                    <span class="filter-checkbox"></span>
+                                    {{ item.title }}
+                                </a>
+                           </li>
+                           {% endfor %}
+                       </ul>
+                    {% endif %}
+               {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </div>
+
+</form>
