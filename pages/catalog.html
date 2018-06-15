@@ -1,0 +1,13 @@
+<!-- html content -->
+
+<script>
+	jQuery('body').loadpage({
+		productsGrid: '.showcase-catalog',
+		pagenationContainer: '.pagination-loadmore',
+		totalPages:{{ paginate.params.pageCount }},
+		itemsPerRow: 3,
+		rowsPerLoad: 2,
+		buttonLoadMore: '.load-more',
+		limitPagesOnScroll: 12
+	});
+</script>
